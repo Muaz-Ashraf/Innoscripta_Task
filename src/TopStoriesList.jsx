@@ -18,7 +18,12 @@ import { MagnifyingGlass } from "react-loader-spinner";
 import axios from "axios";
 import Loader from "./Loader";
 import Animation from "./Animation";
-import { NYTIMES_APIKEY, NYTIMES_BASEURL } from "./constants/constants";
+import {
+  NEWS_APIKEY,
+  NEWS_BASEURL,
+  NYTIMES_APIKEY,
+  NYTIMES_BASEURL,
+} from "./constants/constants";
 
 const TopStoriesList = () => {
   const navigate = useNavigate();
@@ -26,7 +31,7 @@ const TopStoriesList = () => {
   const [loading, setLoading] = useState(true);
   const [section, setSection] = useState("home");
 
-  const getData = async () => {
+  const getNYData = async () => {
     try {
       const response = await axios.get(
         `${NYTIMES_BASEURL}svc/topstories/v2/${section}.json?api-key=${NYTIMES_APIKEY}`
@@ -40,10 +45,24 @@ const TopStoriesList = () => {
       console.error(error);
     }
   };
+  const getNewsData = async () => {
+    try {
+      const response = await axios.get(
+        `${NEWS_BASEURL}top-headlines?country=us&apiKey=${NEWS_APIKEY}`
+      );
+
+      setData(response.data.results);
+      setLoading(false);
+
+      console.log(response.data.results);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     setLoading(true);
-    getData();
+    getNYData();
   }, [section]);
 
   return (

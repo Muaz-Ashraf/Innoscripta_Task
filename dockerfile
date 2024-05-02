@@ -1,6 +1,6 @@
-FROM node:20
+FROM node:18-alpine
 
-WORKDIR /INNOSCRIPTA_TASK
+WORKDIR /NEWS_APP
 
 COPY package.json .
 
@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 5173
+RUN npm run build
 
-CMD [ "npm","run","dev" ]
+EXPOSE 8080
+
+CMD [ "npm", "run", "preview" ]
